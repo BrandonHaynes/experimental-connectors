@@ -1,5 +1,5 @@
 from .. import Schema
-from itertools import chain, imap, izip
+from itertools import chain, imap, izip, repeat
 
 class SciDBSchema(Schema):
   def __init__(self, *args, **kwargs):
