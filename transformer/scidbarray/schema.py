@@ -16,8 +16,15 @@ class SciDBSchema(Schema):
 
   @property
   def local(self):
-    if any(self.nullable):
-        raise ArgumentException('Nullable attribute {} not supported'.format(name))
+    chunk_size = 2**24
+    overlap = 0
+    print '---'
+    print zip(self.names, self.types)
+    print '---'
+    attributes = map(':'.join, zip(self.names, self.types))
+    dimensions= 'i=0:*'
 
-    return {'columnNames': self.names,
-            'columnTypes': self.types }
+    return '<{attributes}> [{dimensions},{chunk_size},{overlap}]'.format(attributes=','.join(attributes), 
+                                                                         dimensions=dimensions,
+                                                                         chunk_size=chunk_size,
+                                                                         overlap=overlap)
