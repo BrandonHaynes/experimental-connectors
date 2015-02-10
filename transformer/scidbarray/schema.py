@@ -24,4 +24,4 @@ class SciDBSchema(Schema):
         raise ArgumentException('Nullable attribute {} not supported'.format(name))
 
     return {'columnNames': self.names,
-            'columnTypes': [self.type_map[type] for type in self.types] }
+            'columnTypes': self.types }
