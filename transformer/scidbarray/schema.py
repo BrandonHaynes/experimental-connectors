@@ -11,8 +11,8 @@ class SciDBSchema(Schema):
                                                           array.datashape.dim_high, array.datashape.chunk_size, 
                                                           array.datashape.chunk_overlap))
     elif 'schema' in kwargs:
-      super(SciDBSchema, self).__init__(zip(schema.local['json']['columnNames'], 
-                                            schema.local['json']['columnTypes'], 
+      super(SciDBSchema, self).__init__(zip(kwargs['schema']['columnNames'], 
+                                            kwargs['schema']['columnTypes'], 
                                             repeat(False)), 
                                         args, **kwargs)
     else:
