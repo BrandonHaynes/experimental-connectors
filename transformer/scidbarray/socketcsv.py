@@ -30,3 +30,10 @@ class SciDBSocketCSV(SocketCSV):
     name = 'socket:' + ','.join(uris)
     array.interface.query("save(scan({}), '{}', -1, '{}')"
                           .format(array.name, name, 'csv+'))
+
+  @classmethod
+  def import_(cls, source, intermediate, *args, **kwargs):
+    interface = scidbpy.connect(kwargs["url"])
+    print "load(create_array({}, {}), '{}@{}', -1, '{}')".format(source.name, source.schema, kwargs["hostname"], kwargs["port"], 'text')
+    return interface.query("load(create_array({}, {}), '{}@{}', -1, '{}')"
+                          .format(source.name, SciDBSchema(source.schema).local, kwargs["hostname"], kwargs["port"], 'text'))
