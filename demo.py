@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     #array = scidbpy.connect('http://localhost:8080').randint((10, 10))
 
-    relation = MyriaRelation("Test")
+    relation = MyriaRelation("smallEx")
     relation.transform(scidbpy.SciDBArray, SocketCSV, hostname='localhost', port=9999, url=None)
 
     # TODO:

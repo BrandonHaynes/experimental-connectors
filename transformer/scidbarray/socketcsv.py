@@ -6,6 +6,7 @@ import scidbpy
 from .. import SocketCSV
 from . import SciDBSchema
 import utility
+import time
 
 class SciDBSocketCSV(SocketCSV):
   type = scidbpy.SciDBArray
@@ -37,6 +38,7 @@ class SciDBSocketCSV(SocketCSV):
     #print "load(create_array({}, {}), '{}@{}', -1, '{}')".format(source.name, source.schema, kwargs["hostname"], kwargs["port"], 'text')
     
     #result = interface.query("create_array({}, {})".format(source.name, SciDBSchema(source.schema).local))
+    time.sleep(10)
     #print "*****RESULT = " + result
     print "-----"
     print "-----"
