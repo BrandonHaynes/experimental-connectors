@@ -35,9 +35,10 @@ class SciDBSocketCSV(SocketCSV):
   @classmethod
   def import_(cls, source, intermediate, *args, **kwargs):
     interface = scidbpy.connect(kwargs["url"])
+    name = source.name.replace(':', '_')
     #print "load(create_array({}, {}), '{}@{}', -1, '{}')".format(source.name, source.schema, kwargs["hostname"], kwargs["port"], 'text')
     
-    #result = interface.query("create_array({}, {})".format(source.name, SciDBSchema(source.schema).local))
+    #result = interface.query("create_array({}, {})".format(name, SciDBSchema(source.schema).local))
     time.sleep(10)
     #print "*****RESULT = " + result
     print "-----"
@@ -45,5 +46,5 @@ class SciDBSocketCSV(SocketCSV):
     #sprint result
     print "-----"
     print "-----"
-    return interface.query("load({}, '{}@{}')"
-                          .format(source.name, kwargs["hostname"], kwargs["port"]))
+    return interface.query("load({}, '{}@{}', -1)"
+                          .format(name, kwargs["hostname"], kwargs["port"]))

@@ -35,5 +35,6 @@ class MyriaSocketCSV(SocketCSV):
 
     plan = utility.get_export_plan(schema, relation.connection.workers(), port, relation)
     print plan
+    MyriaQuery.submit_plan(plan, relation.connection, timeout=kwargs.get('timeout', 60))
     return namedtuple('Intermediate', [])()
 

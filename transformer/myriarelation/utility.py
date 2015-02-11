@@ -25,7 +25,7 @@ def get_export_fragment(taskid, schema, relation, scan_type, port, workerid):
                   "opType": scan_type, # Look in operators to determine type for reading from db
 
                   "schema": schema.local,
-                  "sql": "SELECT * FROM " + relation.name,
+                  "sql": 'SELECT * FROM "{}"'.format(relation.name),
                },
                {
                   "argChild": taskid[0]-1,
