@@ -18,11 +18,13 @@ class Schema(object):
               'uint64': 'LONG_TYPE', 
               'uint32': 'INT_TYPE', 
               'float':  'FLOAT_TYPE',
-              'double': 'DOUBLE_TYPE'} #TODO: What is Myria's story for nans?
+              'double': 'DOUBLE_TYPE',  #TODO: What is Myria's story for nans?
+              'string': 'STRING_TYPE'}
 
   @property
   def _reverse_type_map(self):
       return {'LONG_TYPE': 'int64', 
               'INT_TYPE': 'int32', 
               'FLOAT_TYPE': 'float',
+              'STRING_TYPE': 'string',
               'DOUBLE_TYPE': 'double'}
