@@ -5,12 +5,12 @@ from itertools import chain, imap, izip, repeat
 class SciDBSchema(Schema):
   def __init__(self, source, *args, **kwargs):
     if isinstance(source, scidbpy.SciDBArray):
-      super(SciDBSchema, self).__init__(chain(imap(lambda name: (name, 'int64', False), array.dim_names),
-                                              array.sdbtype.full_rep), 
-                                          attributes=array.sdbtype.full_rep, 
-                                          dimensions=izip(array.datashape.dim_names, array.datashape.dim_low, 
-                                                          array.datashape.dim_high, array.datashape.chunk_size, 
-                                                          array.datashape.chunk_overlap))
+      super(SciDBSchema, self).__init__(chain(imap(lambda name: (name, 'int64', False), source.dim_names),
+                                              source.sdbtype.full_rep), 
+                                          attributes=source.sdbtype.full_rep, 
+                                          dimensions=izip(source.datashape.dim_names, source.datashape.dim_low, 
+                                                          source.datashape.dim_high, source.datashape.chunk_size, 
+                                                          source.datashape.chunk_overlap))
     else:
       super(SciDBSchema, self).__init__(source.default)
 
