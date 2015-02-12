@@ -12,8 +12,8 @@ if __name__ == '__main__':
     #array = scidbpy.connect('http://localhost:8080').randint((10, 10))
 
     relation = MyriaRelation("public:adhoc:smallEx")
-    array = relation.transform(scidbpy.SciDBArray, SocketCSV, hostname='large2-node001', port=9999, url=None)
-    print array.toJson()
+    array = relation.transform(scidbpy.SciDBArray, SocketCSV, hostname='localhost', port=9999, url=None)
+    print array.toarray()
 
     # TODO:
     # Can we automate "ssh-agent && ssh-add ~/.ssh/uwdb_ec2.rsa"?
