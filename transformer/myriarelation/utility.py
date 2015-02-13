@@ -10,14 +10,14 @@ def get_plan(schema, work, relation, query='', scan_type='FileScan'):
         "logicalRa": query, 
         "rawQuery":  query }
 
-def get_export_plan(schema, workers, port, relation, query='', scan_type='DbQueryScan'):
+def get_export_plan(schema, workers, port, relation, csvFormat, query='', scan_type='DbQueryScan', sync_type='SocketDataOutput', littleEndian=True):
   # workers is a list of ids
   return \
-      { "fragments": map(partial(get_export_fragment, [0], schema, relation, scan_type, port), workers),
+      { "fragments": map(partial(get_export_fragment, [0], schema, relation, scan_type, port, sync_type, csvFormat, littleEndian), workers),
         "logicalRa": query, 
         "rawQuery":  query }
 
-def get_export_fragment(taskid, schema, relation, scan_type, port, workerid):
+def get_export_fragment(taskid, schema, relation, scan_type, port, sync_type, csvFormat, littleEndian, workerid):
   return { "overrideWorkers": [workerid],
             "operators":[
                {
@@ -31,9 +31,11 @@ def get_export_fragment(taskid, schema, relation, scan_type, port, workerid):
                   "argChild": taskid[0]-1,
 
                   "opId": __increment(taskid),
-                  "opType": "SocketDataOutput",
+                  "opType": sync_type,
 
-                  "port": port
+                  "port": port,
+                  "csvFormat": csvFormat,
+                  "isLittleEndian": littleEndian
                 }
              ]
           }

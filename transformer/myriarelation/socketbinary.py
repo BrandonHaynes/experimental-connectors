@@ -6,6 +6,7 @@ from urlparse import urlparse, ParseResult
 from myria import MyriaConnection
 from .. import SocketBinary
 from . import MyriaRelation, MyriaQuery, MyriaSchema, utility
+from collections import namedtuple
 
 class MyriaSocketBinary(SocketBinary):
   type = MyriaRelation
@@ -33,3 +34,13 @@ class MyriaSocketBinary(SocketBinary):
 
     print plan
     return MyriaQuery.submit_plan(plan, connection, timeout=kwargs.get('timeout', 60))
+
+  @classmethod
+  def export(self, relation, *args, **kwargs):
+    schema = relation.schema
+    port = kwargs["port"]
+
+    plan = utility.get_export_plan(schema, relation.connection.workers(), port, relation, False)
+    print plan
+    MyriaQuery.submit_plan(plan, relation.connection, timeout=kwargs.get('timeout', 60))
+    return namedtuple('Intermediate', [])()

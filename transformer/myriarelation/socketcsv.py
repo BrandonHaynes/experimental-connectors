@@ -6,7 +6,6 @@ from urlparse import urlparse, ParseResult
 from myria import MyriaConnection
 from .. import SocketCSV
 from . import MyriaRelation, MyriaQuery, MyriaSchema, utility
-from collections import namedtuple
 
 class MyriaSocketCSV(SocketCSV):
   type = MyriaRelation
@@ -33,7 +32,7 @@ class MyriaSocketCSV(SocketCSV):
     schema = relation.schema
     port = kwargs["port"]
 
-    plan = utility.get_export_plan(schema, relation.connection.workers(), port, relation)
+    plan = utility.get_export_plan(schema, relation.connection.workers(), port, relation, True)
     print plan
     MyriaQuery.submit_plan(plan, relation.connection, timeout=kwargs.get('timeout', 60))
     return namedtuple('Intermediate', [])()

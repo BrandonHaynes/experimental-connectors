@@ -3,7 +3,7 @@ import scidbpy
 from myria import MyriaConnection
 from transformer import Transformable
 from transformer.myriarelation import MyriaRelation
-from transformer import CSV, SerialCSV, FIFO, SocketCSV
+from transformer import CSV, SerialCSV, FIFO, SocketCSV, SocketBinary
 
 if __name__ == '__main__':
     Transformable.mixin(scidbpy.SciDBArray)
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     #array = scidbpy.connect('http://localhost:8080').randint((10, 10))
 
     relation = MyriaRelation("public:adhoc:smallEx")
-    array = relation.transform(scidbpy.SciDBArray, SocketCSV, hostname='localhost', port=9999, url=None)
+    array = relation.transform(scidbpy.SciDBArray, SocketBinary, hostname='localhost', port=9999, url=None)
     print array.toarray()
 
     # TODO:

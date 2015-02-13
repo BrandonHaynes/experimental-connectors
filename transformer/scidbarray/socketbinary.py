@@ -6,6 +6,7 @@ import scidbpy
 from .. import SocketBinary
 from . import SciDBSchema
 import utility
+import time
 
 class SciDBSocketBinary(SocketBinary):
   type = scidbpy.SciDBArray
@@ -25,5 +26,18 @@ class SciDBSocketBinary(SocketBinary):
   @staticmethod
   def _write_pipes(array, uris):
     name = 'socket:' + ','.join(uris)
+    types = '({})'.format(",".join(source.schema.types))
     array.interface.query("save(scan({}), '{}', -1, '{}')"
-                          .format(array.name, name, '(double)'))
+                          .format(array.name, name, types))
+
+  @classmethod
+  def import_(cls, source, intermediate, *args, **kwargs):
+    interface = scidbpy.connect(kwargs["url"])
+    name = source.name.replace(':', '_')
+
+    types = '({})'.format(",".join(source.schema.types))
+    print types
+
+    time.sleep(10)
+    return interface.query("load({}, '{}@{}', -1, '{}')"
+                          .format(name, kwargs["hostname"], kwargs["port"], types))
