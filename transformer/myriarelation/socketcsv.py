@@ -13,7 +13,7 @@ class MyriaSocketCSV(SocketCSV):
   @classmethod
   def import_(cls, source, intermediate, *args, **kwargs):
     connection = MyriaConnection(*args, **kwargs) if args or kwargs else MyriaRelation.DefaultConnection
-    schema = MyriaSchema(intermediate.schema).local
+    schema = MyriaSchema(schema=intermediate.schema).local
     pool = multiprocessing.Pool(processes=len(intermediate.uris))
     workers = [(id, urlparse('//' + name).hostname) for (id, name) \
                  in connection.workers().items()]
