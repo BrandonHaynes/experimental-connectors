@@ -36,7 +36,8 @@ class SciDBSocketBinary(SocketBinary):
     name = source.name.replace(':', '_')
 
     types = '({})'.format(",".join(source.schema.types))
-    print types
+
+    result = interface.query("create_array({}, {})".format(name, SciDBSchema(source.schema).local))
 
     time.sleep(10)
     return interface.query("load({}, '{}@{}', -1, '{}')"
