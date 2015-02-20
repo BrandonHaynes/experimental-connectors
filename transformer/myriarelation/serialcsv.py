@@ -9,7 +9,7 @@ class MyriaSerialCSV(SerialCSV):
   @classmethod
   def import_(cls, source, intermediate, *args, **kwargs):
     connection = MyriaConnection(*args, **kwargs) if args or kwargs else MyriaRelation.DefaultConnection
-    schema = MyriaSchema(intermediate.schema).local
+    schema = MyriaSchema(schema=intermediate.schema).local
 
     uri = utility._copy_local(urlparse(intermediate.uris[0]))
 

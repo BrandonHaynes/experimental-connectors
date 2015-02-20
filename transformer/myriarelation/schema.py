@@ -4,9 +4,9 @@ from .. import Schema
 class MyriaSchema(Schema):
   def __init__(self, *args, **kwargs):
     if 'schema' in kwargs:
-      super(MyriaSchema, self).__init__(schema.default, 
-                                        schema.attributes['args'] + args, 
-                                        **dict(schema.attributes.items() + kwargs.items()))
+      super(MyriaSchema, self).__init__(kwargs['schema'].default, 
+                                        kwargs['schema'].attributes['args'] + args, 
+                                        **dict(kwargs['schema'].attributes.items() + kwargs.items()))
     elif 'json' in kwargs:
       super(MyriaSchema, self).__init__(zip(kwargs['json']['columnNames'], 
                                             map(lambda t: self._reverse_type_map[t], 

@@ -1,6 +1,6 @@
 class Schema(object):
   def __init__(self, default, *args, **kwargs):
-    print default
+    #print default
     default = list(default)
     names, types, nullable = zip(*default)
 

@@ -9,7 +9,7 @@ def _get_filename(path=tempfile.gettempdir()):
 
   # TODO This doesn't guarantee a usable name on a remote system...
   with tempfile.NamedTemporaryFile(suffix='.fifo', delete=True, dir=path) as file:
-    print file.name
+    #print file.name
     return file.name
 
 def _get_workers(connection):

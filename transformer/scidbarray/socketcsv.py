@@ -2,6 +2,7 @@ import threading
 import multiprocessing
 import random
 from collections import namedtuple
+from functools import partial
 import scidbpy
 from .. import SocketCSV
 from . import SciDBSchema
@@ -34,17 +35,33 @@ class SciDBSocketCSV(SocketCSV):
 
   @classmethod
   def import_(cls, source, intermediate, *args, **kwargs):
-    interface = scidbpy.connect(kwargs["url"])
+    interface = scidbpy.connect(kwargs['url'])
+    workers = utility._get_workers(interface)
+    pool = multiprocessing.Pool(processes=len(workers))
     name = source.name.replace(':', '_')
-    #print "load(create_array({}, {}), '{}@{}', -1, '{}')".format(source.name, source.schema, kwargs["hostname"], kwargs["port"], 'text')
-    
-    #result = interface.query("create_array({}, {})".format(name, SciDBSchema(source.schema).local))
-    time.sleep(10)
-    #print "*****RESULT = " + result
-    print "-----"
-    print "-----"
-    #sprint result
-    print "-----"
-    print "-----"
-    return interface.query("load({}, '{}@{}', -1)"
-                          .format(name, kwargs["hostname"], kwargs["port"]))
+    schema = SciDBSchema(source.schema).local
+
+    try:
+      result = interface.query("create_array({}, {})".format(name, schema))
+    except Exception:
+      pass
+
+    pool.map(partial(_load, name, schema, kwargs['url'], 
+                            kwargs['hostname'], kwargs['port']), workers)
+    pool.close()
+    pool.join()
+
+    #map(lambda w: interface.query('reshape({}_{}, {})'.format(name, w['id'], schema.replace('*', '9999999')), workers)
+    #vstack = reduce('concat({}, {})'.format, ('{}_{}'.format(name, w['id']) for w in workers))
+    #interface.query('store({}, {})'.format(name, vstack))
+
+def _load(name, schema, url, hostname, port, worker):
+  interface = scidbpy.connect(url)
+  local_name = '{}_{}'.format(name, worker['id'])
+
+  try:
+    interface.query('create temp array {}{}'.format(local_name, schema))
+  except Exception:
+    pass
+  return interface.query("load({}, '{}@{}', {}, 'text')"
+                           .format(local_name, hostname, port, worker['id']))
