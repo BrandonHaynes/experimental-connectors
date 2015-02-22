@@ -1,3 +1,4 @@
+from sys import argv
 import timeit
 import uuid
 import scidbpy 
@@ -24,8 +25,9 @@ if __name__ == '__main__':
     Transformable.mixin(scidbpy.SciDBArray)
     Transformable.mixin(MyriaRelation)
 
-    coordinator = 'large2-master'
-    sizes = [1000000 * 2**x for x in xrange(9,10)]
+    coordinator = 'localhost'
+    exponents = (int(argv[1]), int(argv[1])+1) if len(argv) > 1 else (4,5)
+    sizes = [1000000 * 2**x for x in xrange(*exponents)]
     strategies = [SocketBinary] #SocketCSV] #SocketBinary, SocketCSV] #Binary #Binary #SocketCSV #FIFO #SocketBinary
 
     for size in sizes:
